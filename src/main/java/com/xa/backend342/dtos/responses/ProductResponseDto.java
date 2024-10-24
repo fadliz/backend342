@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class ProductResponseDto {
+    private Long id;
     private String slug;
     private String name;    
     private String createdBy;

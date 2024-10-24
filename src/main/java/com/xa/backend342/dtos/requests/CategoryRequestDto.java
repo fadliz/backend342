@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class CategoryRequestDto {
-    // private String id;
     private String name;
     private String slug;
     private String createdBy;

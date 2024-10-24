@@ -9,6 +9,7 @@ import lombok.Data;
 
 @Data
 public class VariantResponseDto {
+    private Long id;
     private String slug;
     private String name;
     private String description;
