@@ -2,16 +2,17 @@ package com.xa.backend342.services.interfaces;
 
 import java.util.List;
 
-import com.xa.backend342.entities.Product;
+import com.xa.backend342.dtos.requests.ProductRequestDto;
+import com.xa.backend342.dtos.responses.ProductResponseDto;
 
 public interface ProductService {
-    Product createProduct(Product product);
+    ProductResponseDto createProduct(ProductRequestDto productRequestDto);
 
-    Product updateProduct(Long id, Product product);
+    ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto);
 
     void deleteProduct(Long id);
 
-    Product getProduct(Long id);
+    ProductResponseDto getProductById(Long id);
 
-    List<Product> getProducts();
+    List<ProductResponseDto> getProducts();
 }

@@ -11,6 +11,7 @@ import com.xa.backend342.entities.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
     @Query("SELECT p FROM Product p WHERE p.category.isDeleted = FALSE")
     List<Product> getAvailableProducts();
 

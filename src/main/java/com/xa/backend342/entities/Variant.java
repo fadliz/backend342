@@ -2,6 +2,8 @@ package com.xa.backend342.entities;
 
 import java.math.BigDecimal;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.SQLDelete;
 
 import com.xa.backend342.utils.SlugUtils;
@@ -15,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,7 +33,7 @@ public class Variant extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER) 
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", nullable = false, insertable = false, updatable = false)
     private Product product;
 
@@ -44,7 +47,7 @@ public class Variant extends BaseEntity {
     private String name;
 
     @Lob
-    @Column(name = "description", columnDefinition="TEXT", nullable = true)
+    @Column(name = "description", columnDefinition = "TEXT", nullable = true)
     private String description;
 
     @Column(name = "price", nullable = false)
@@ -56,7 +59,9 @@ public class Variant extends BaseEntity {
     public Variant() {
     }
 
-    public Variant(Long productId, String name, String description, BigDecimal price, BigDecimal stock, String createdBy) {
+    public Variant(Long productId, String name, String description, BigDecimal price, BigDecimal stock,
+            String createdBy) {
+        super();
         this.productId = productId;
         this.name = name;
         this.description = description;
@@ -66,6 +71,12 @@ public class Variant extends BaseEntity {
         this.setCreatedBy(createdBy);
     }
 
+    private static Log log = LogFactory.getLog(Variant.class);
+
+    @PreUpdate
+    public void logCategoryUpdateAttempt() {
+        log.info("Attempting to update Variant name: " + name);
+    }
     // public Product(String name, String description, Long price, Long categoryId)
     // {
     // this.name = name;

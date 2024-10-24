@@ -8,10 +8,10 @@ import lombok.Data;
 public class CategoryResponseDto {
     private String name;
     private String slug;
-    private boolean isDeleted;
-    private LocalDateTime deletedAt;
     private String createdBy;
-    private LocalDateTime createdAt;
     private String modifiedBy;
+    private boolean isDeleted;
+    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private LocalDateTime deletedAt;
 }

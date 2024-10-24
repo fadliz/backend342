@@ -2,16 +2,17 @@ package com.xa.backend342.services.interfaces;
 
 import java.util.List;
 
-import com.xa.backend342.entities.Category;
+import com.xa.backend342.dtos.requests.CategoryRequestDto;
+import com.xa.backend342.dtos.responses.CategoryResponseDto;
 
 public interface CategoryService {
-    Category createCategory(Category category);
+    CategoryResponseDto createCategory(CategoryRequestDto categoryRequestDto);
 
-    Category updateCategory(Long id, Category category);
+    CategoryResponseDto updateCategory(Long id, CategoryRequestDto categoryRequestDto);
 
     void deleteCategory(Long id);
 
-    Category getCategory(Long id);
+    CategoryResponseDto getCategoryById(Long id);
 
-    List<Category> getCategories();
+    List<CategoryResponseDto> getCategories();
 }

@@ -1,11 +1,7 @@
 package com.xa.backend342.controllers;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xa.backend342.dtos.requests.VariantRequestDto;
 import com.xa.backend342.dtos.responses.VariantResponseDto;
-import com.xa.backend342.entities.Variant;
+import com.xa.backend342.payloads.ApiResponse;
 import com.xa.backend342.services.impl.VariantServiceImpl;
-import com.xa.backend342.utils.SlugUtils;
 
 @RestController
 @RequestMapping("/api/variant")
@@ -33,74 +28,30 @@ public class VariantRestController {
     @Autowired
     VariantServiceImpl variantService;
 
+    @PostMapping("")
+    public ResponseEntity<?> createVariant(@RequestBody VariantRequestDto variantRequestDto) {
+        VariantResponseDto variantResponseDto = variantService.createVariant(variantRequestDto);
+        return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), variantResponseDto));
+    }
+
     @GetMapping("")
     public ResponseEntity<?> getVariants() {
-        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setMatchingStrategy(MatchingStrategies.STRICT);
-        try {
-            List<Variant> variants = variantService.getVariants();
-            List<VariantResponseDto> variantResponseDtos = variants.stream()
-                    .map(variant -> modelMapper.map(variant, VariantResponseDto.class))
-                    .collect(Collectors.toList());
-            resultMap.put("status", 200);
-            resultMap.put("message", "success");
-            resultMap.put("data", variantResponseDtos);
-            return new ResponseEntity<>(resultMap, HttpStatus.OK);
-        } catch (Exception e) {
-            resultMap.put("status", 500);
-            resultMap.put("message", "success");
-            resultMap.put("error", e);
-            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<VariantResponseDto> variantResponseDtos = variantService.getVariants();
+        return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), variantResponseDtos));
+
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getVariantById(@PathVariable Long id) {
-        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setMatchingStrategy(MatchingStrategies.STRICT);
-        try {
-            Variant variant = variantService.getVariant(id);
-            VariantResponseDto variantResponseDto = modelMapper.map(variant, VariantResponseDto.class);
-            resultMap.put("status", 200);
-            resultMap.put("message", "success");
-            resultMap.put("data", variantResponseDto);
-            return new ResponseEntity<>(resultMap, HttpStatus.OK);
-        } catch (Exception e) {
-            resultMap.put("status", 500);
-            resultMap.put("message", "success");
-            resultMap.put("error", e);
-            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        VariantResponseDto variantResponseDto = variantService.getVariantById(id);
+        return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), variantResponseDto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateVariant(@PathVariable Long id,
             @RequestBody VariantRequestDto variantRequestDto) {
-        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setMatchingStrategy(MatchingStrategies.STRICT);
-        if (variantRequestDto.getSlug() == null) {
-            variantRequestDto.setSlug(SlugUtils.toSlug(variantRequestDto.getName()));
-        }
-        try {
-            Variant variant = modelMapper.map(variantRequestDto, Variant.class);
-            Variant updatedVariant = variantService.updateVariant(id, variant);
-            VariantResponseDto variantResponseDto = modelMapper.map(updatedVariant, VariantResponseDto.class);
-            resultMap.put("status", 200);
-            resultMap.put("message", "success");
-            resultMap.put("data", variantResponseDto);
-            return new ResponseEntity<>(resultMap, HttpStatus.OK);
-        } catch (Exception e) {
-            resultMap.put("status", 500);
-            resultMap.put("message", "success");
-            resultMap.put("error", e);
-            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        VariantResponseDto variantResponseDto = variantService.updateVariant(id, variantRequestDto);
+        return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), variantResponseDto));
     }
 
     @DeleteMapping("/{id}")
@@ -109,28 +60,4 @@ public class VariantRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("")
-    public ResponseEntity<?> saveVariant(@RequestBody VariantRequestDto variantRequestDto) {
-        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setMatchingStrategy(MatchingStrategies.STRICT);
-        if (variantRequestDto.getSlug() == null) {
-            variantRequestDto.setSlug(SlugUtils.toSlug(variantRequestDto.getName()));
-        }
-        try {
-            Variant variant = modelMapper.map(variantRequestDto, Variant.class);
-            Variant createdVariant = variantService.createVariant(variant);
-            VariantResponseDto variantResponseDto = modelMapper.map(createdVariant, VariantResponseDto.class);
-            resultMap.put("status", 200);
-            resultMap.put("message", "success");
-            resultMap.put("data", variantResponseDto);
-            return new ResponseEntity<>(resultMap, HttpStatus.OK);
-        } catch (Exception e) {
-            resultMap.put("status", 500);
-            resultMap.put("message", "success");
-            resultMap.put("error", e);
-            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

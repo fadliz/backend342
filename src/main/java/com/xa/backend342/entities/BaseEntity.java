@@ -3,10 +3,10 @@ package com.xa.backend342.entities;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
@@ -26,6 +26,7 @@ public class BaseEntity {
     @Column(name = "modified_by", length = 50, nullable = true)
     private String modifiedBy;
 
+    @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified_at", nullable = true)
     private LocalDateTime modifiedAt;
@@ -36,11 +37,6 @@ public class BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_at", nullable = true)
     private LocalDateTime deletedAt;
-
-    @PreUpdate
-    public void onUpdate() {
-        this.modifiedAt = LocalDateTime.now();
-    }
 
 
     // @CreationTimestamp

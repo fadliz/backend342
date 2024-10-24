@@ -8,14 +8,14 @@ import lombok.Data;
 
 @Data
 public class ProductResponseDto {
-    private Category category;
-    private Long categoryId;
     private String slug;
-    private String name;
-    private boolean isDeleted;
-    private LocalDateTime deletedAt;
+    private String name;    
     private String createdBy;
-    private LocalDateTime createdAt;
     private String modifiedBy;
+    private boolean isDeleted;
+    private Long categoryId;
+    private Category category;
+    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private LocalDateTime deletedAt;
 }

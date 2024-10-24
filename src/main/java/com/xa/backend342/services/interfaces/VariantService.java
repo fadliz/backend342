@@ -2,16 +2,18 @@ package com.xa.backend342.services.interfaces;
 
 import java.util.List;
 
-import com.xa.backend342.entities.Variant;
+import com.xa.backend342.dtos.requests.VariantRequestDto;
+import com.xa.backend342.dtos.responses.VariantResponseDto;
+
 
 public interface VariantService {
-    Variant createVariant(Variant variant);
+    VariantResponseDto createVariant(VariantRequestDto variantRequestDto);
 
-    Variant updateVariant(Long id, Variant variant);
+    VariantResponseDto updateVariant(Long id, VariantRequestDto variantRequestDto);
 
     void deleteVariant(Long id);
 
-    Variant getVariant(Long id);
+    VariantResponseDto getVariantById(Long id);
 
-    List<Variant> getVariants();
+    List<VariantResponseDto> getVariants();
 }
