@@ -73,4 +73,10 @@ public class CategoryRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/slug={slug}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable String slug) {
+        categoryService.deleteCategory(categoryService.getCategoryBySlug(slug).getId());
+        return ResponseEntity.noContent().build();
+    }
+
 }

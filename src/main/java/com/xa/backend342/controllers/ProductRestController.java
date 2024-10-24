@@ -41,9 +41,9 @@ public class ProductRestController {
 
     }
 
-    @GetMapping("/product/{productId}")
-    public ResponseEntity<?> getAvailableProductsByCategoryId(@PathVariable Long productId) {
-        List<ProductResponseDto> productResponseDtos = productService.getAvailableProductsByCategoryId(productId);
+    @GetMapping("/categoryId={categoryId}")
+    public ResponseEntity<?> getAvailableProductsByCategoryId(@PathVariable Long categoryId) {
+        List<ProductResponseDto> productResponseDtos = productService.getAvailableProductsByCategoryId(categoryId);
         return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), productResponseDtos));
 
     }
