@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.SQLDelete;
 
-import com.xa.backend342.utils.SlugUtils;
+import com.xa.backend342.utils.SlugUtil;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -67,7 +67,7 @@ public class Variant extends BaseEntity {
         this.description = description;
         this.price = price;
         this.stock = stock;
-        this.slug = SlugUtils.toSlug(name);
+        this.slug = SlugUtil.toSlug(name);
         this.setCreatedBy(createdBy);
     }
 

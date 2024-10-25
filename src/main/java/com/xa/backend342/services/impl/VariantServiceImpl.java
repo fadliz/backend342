@@ -13,7 +13,7 @@ import com.xa.backend342.dtos.responses.VariantResponseDto;
 import com.xa.backend342.entities.Variant;
 import com.xa.backend342.repositories.VariantRepository;
 import com.xa.backend342.services.interfaces.VariantService;
-import com.xa.backend342.utils.SlugUtils;
+import com.xa.backend342.utils.SlugUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -29,7 +29,7 @@ public class VariantServiceImpl implements VariantService {
     @Override
     public VariantResponseDto createVariant(VariantRequestDto variantRequestDto) {
         if (variantRequestDto.getSlug() == null) {
-            variantRequestDto.setSlug(SlugUtils.toSlug(variantRequestDto.getName()));
+            variantRequestDto.setSlug(SlugUtil.toSlug(variantRequestDto.getName()));
         }
         Variant variant = modelMapper.map(variantRequestDto, Variant.class);
         return modelMapper.map(variantRepository.save(variant), VariantResponseDto.class);
@@ -63,7 +63,7 @@ public class VariantServiceImpl implements VariantService {
         if (existingVariantOpt.isPresent()) {
             Variant existingVariant = existingVariantOpt.get();
             if (variantRequestDto.getSlug() == null) {
-                variantRequestDto.setSlug(SlugUtils.toSlug(variantRequestDto.getName()));
+                variantRequestDto.setSlug(SlugUtil.toSlug(variantRequestDto.getName()));
             }
             if (variantRequestDto.getCreatedBy() == null) {
                 variantRequestDto.setCreatedBy(existingVariant.getCreatedBy());

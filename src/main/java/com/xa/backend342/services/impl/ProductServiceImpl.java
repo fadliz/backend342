@@ -13,7 +13,7 @@ import com.xa.backend342.dtos.responses.ProductResponseDto;
 import com.xa.backend342.entities.Product;
 import com.xa.backend342.repositories.ProductRepository;
 import com.xa.backend342.services.interfaces.ProductService;
-import com.xa.backend342.utils.SlugUtils;
+import com.xa.backend342.utils.SlugUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         if (productRequestDto.getSlug() == null) {
-            productRequestDto.setSlug(SlugUtils.toSlug(productRequestDto.getName()));
+            productRequestDto.setSlug(SlugUtil.toSlug(productRequestDto.getName()));
         }
         Product product = modelMapper.map(productRequestDto, Product.class);
         return modelMapper.map(productRepository.save(product), ProductResponseDto.class);
@@ -71,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
         if (existingProductOpt.isPresent()) {
             Product existingProduct = existingProductOpt.get();
             if (productRequestDto.getSlug() == null) {
-                productRequestDto.setSlug(SlugUtils.toSlug(productRequestDto.getName()));
+                productRequestDto.setSlug(SlugUtil.toSlug(productRequestDto.getName()));
             }
             if (productRequestDto.getCreatedBy() == null) {
                 productRequestDto.setCreatedBy(existingProduct.getCreatedBy());

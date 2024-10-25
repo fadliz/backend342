@@ -13,7 +13,7 @@ import com.xa.backend342.dtos.responses.CategoryResponseDto;
 import com.xa.backend342.entities.Category;
 import com.xa.backend342.repositories.CategoryRepository;
 import com.xa.backend342.services.interfaces.CategoryService;
-import com.xa.backend342.utils.SlugUtils;
+import com.xa.backend342.utils.SlugUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDto createCategory(CategoryRequestDto categoryRequestDto) { // Generate the slug from name
         if (categoryRequestDto.getSlug() == null) {
-            categoryRequestDto.setSlug(SlugUtils.toSlug(categoryRequestDto.getName()));
+            categoryRequestDto.setSlug(SlugUtil.toSlug(categoryRequestDto.getName()));
         }
         Category category = modelMapper.map(categoryRequestDto, Category.class);
         return modelMapper.map(categoryRepository.save(category), CategoryResponseDto.class);
@@ -69,7 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (existingCategoryOpt.isPresent()) {
             Category existingCategory = existingCategoryOpt.get();
             if (categoryRequestDto.getSlug() == null) {
-                categoryRequestDto.setSlug(SlugUtils.toSlug(categoryRequestDto.getName()));
+                categoryRequestDto.setSlug(SlugUtil.toSlug(categoryRequestDto.getName()));
             }
             if (categoryRequestDto.getCreatedBy() == null) {
                 categoryRequestDto.setCreatedBy(existingCategory.getCreatedBy());
@@ -87,7 +87,7 @@ public class CategoryServiceImpl implements CategoryService {
             Category existingCategory = existingCategoryOpt.get();
             modelMapper.map(categoryRequestDto, existingCategory);
             if (categoryRequestDto.getSlug() == null) {
-                existingCategory.setSlug(SlugUtils.toSlug(categoryRequestDto.getName()));
+                existingCategory.setSlug(SlugUtil.toSlug(categoryRequestDto.getName()));
             }
             return modelMapper.map(categoryRepository.save(existingCategory), CategoryResponseDto.class);
         } else {
