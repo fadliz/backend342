@@ -20,6 +20,7 @@ import com.xa.backend342.dtos.responses.OrderHeaderResponseDto;
 import com.xa.backend342.payloads.ApiResponse;
 import com.xa.backend342.services.impl.OrderHeaderServiceImpl;
 
+
 @RestController
 @RequestMapping("/api/order-header")
 @CrossOrigin("http://localhost:9002")
@@ -58,4 +59,10 @@ public class OrderHeaderRestController {
         orderHeaderService.deleteOrderHeader(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/ref")
+    public ResponseEntity<?> generateReference() {
+        return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), orderHeaderService.createNewReference()));
+    }
+    
 }

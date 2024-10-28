@@ -1,6 +1,7 @@
 package com.xa.backend342.entities;
 
 import java.math.BigDecimal;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.SQLDelete;
@@ -37,11 +38,11 @@ public class OrderDetail extends BaseEntity {
     private Long headerId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id", nullable = false, insertable = false, updatable = false)
-    private Product product;
+    @JoinColumn(name = "variant_id", nullable = false, insertable = false, updatable = false)
+    private Variant variant;
 
-    @Column(name = "product_id", nullable = false)
-    private Long productId;
+    @Column(name = "variant_id", nullable = false)
+    private Long variantId;
 
     @Column(name = "quantity", nullable = false)
     private BigDecimal quantity;
@@ -52,10 +53,10 @@ public class OrderDetail extends BaseEntity {
     public OrderDetail() {
     }
 
-    public OrderDetail(Long headerId, Long productId, BigDecimal quantity, BigDecimal price, String createdBy) {
+    public OrderDetail(Long headerId, Long variantId, BigDecimal quantity, BigDecimal price, String createdBy) {
         super();
         this.headerId = headerId;
-        this.productId = productId;
+        this.variantId = variantId;
         this.quantity = quantity;
         this.price = price;
         this.setCreatedBy(createdBy);
@@ -65,6 +66,6 @@ public class OrderDetail extends BaseEntity {
 
     @PreUpdate
     public void logOrderDetailUpdateAttempt() {
-        log.info("Attempting to update Order Detail for product: " + product.getName() + "on header: " + header.getReference());
+        log.info("Attempting to update Order Detail for product: " + variant.getName() + "on header: " + header.getReference());
     }
 }

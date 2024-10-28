@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class OrderHeaderRequestDto {
+    private String reference;
     private BigDecimal amount;
     private String createdBy;
     private String modifiedBy;

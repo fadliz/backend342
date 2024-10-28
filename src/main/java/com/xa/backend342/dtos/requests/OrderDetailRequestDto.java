@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class OrderDetailRequestDto {
     private Long headerId;
-    private Long productId;
+    private Long variantId;
     private BigDecimal quantity;
     private BigDecimal price;
     private String createdBy;

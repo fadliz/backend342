@@ -31,8 +31,10 @@ public class OrderHeaderServiceImpl implements OrderHeaderService {
     @Override
     public OrderHeaderResponseDto createOrderHeader(OrderHeaderRequestDto orderHeaderRequestDto) {
         //
+        if (orderHeaderRequestDto.getReference() == null) {
+            orderHeaderRequestDto.setReference(this.createNewReference());
+        }
         OrderHeader orderHeader = modelMapper.map(orderHeaderRequestDto, OrderHeader.class);
-        orderHeader.setReference(this.createNewReference());
         return modelMapper.map(orderHeaderRepository.save(orderHeader), OrderHeaderResponseDto.class);
     }
 

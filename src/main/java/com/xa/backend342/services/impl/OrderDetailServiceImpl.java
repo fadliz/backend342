@@ -1,5 +1,6 @@
 package com.xa.backend342.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xa.backend342.dtos.requests.OrderDetailRequestDto;
+import com.xa.backend342.dtos.requests.OrderDto;
 import com.xa.backend342.dtos.responses.OrderDetailResponseDto;
 import com.xa.backend342.entities.OrderDetail;
 import com.xa.backend342.repositories.OrderDetailRepository;
@@ -73,6 +75,16 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     @Override
     public void deleteOrderDetail(Long id) {
         orderDetailRepository.deleteById(id);
+    }
+
+    public List<OrderDetailResponseDto> createOrderDetails(OrderDto orderRequestDto) {
+        List<OrderDetailResponseDto>  orderDetailResponseDtos = new ArrayList<>();
+        for (OrderDetailRequestDto orderDetailRequestDto : orderRequestDto.getOrderDetails()) {            
+            OrderDetail orderDetail = modelMapper.map(orderDetailRequestDto, OrderDetail.class);
+            OrderDetailResponseDto orderDetailResponseDto = modelMapper.map(orderDetailRepository.save(orderDetail), OrderDetailResponseDto.class);
+            orderDetailResponseDtos.add(orderDetailResponseDto);
+        }
+        return orderDetailResponseDtos;
     }
 
 }

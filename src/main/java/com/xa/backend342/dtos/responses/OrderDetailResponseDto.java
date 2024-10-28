@@ -8,7 +8,7 @@ import lombok.Data;
 public class OrderDetailResponseDto {
     private Long id;
     private Long headerId;
-    private Long productId;
+    private Long variantId;
     private BigDecimal quantity;
     private BigDecimal price;
     private String createdBy;
