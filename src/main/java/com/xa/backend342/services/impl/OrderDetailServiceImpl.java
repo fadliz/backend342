@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xa.backend342.dtos.requests.OrderDetailRequestDto;
-import com.xa.backend342.dtos.requests.OrderDto;
 import com.xa.backend342.dtos.responses.OrderDetailResponseDto;
 import com.xa.backend342.entities.OrderDetail;
 import com.xa.backend342.repositories.OrderDetailRepository;
@@ -26,10 +25,12 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     private OrderDetailRepository orderDetailRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private VariantServiceImpl variantService;
 
     @Override
     public OrderDetailResponseDto createOrderDetail(OrderDetailRequestDto orderDetailRequestDto) {
-        // 
+        //
         OrderDetail orderDetail = modelMapper.map(orderDetailRequestDto, OrderDetail.class);
         return modelMapper.map(orderDetailRepository.save(orderDetail), OrderDetailResponseDto.class);
     }
@@ -61,7 +62,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         Optional<OrderDetail> existingOrderDetailOpt = orderDetailRepository.findById(id);
         if (existingOrderDetailOpt.isPresent()) {
             OrderDetail existingOrderDetail = existingOrderDetailOpt.get();
-            // 
+            //
             if (orderDetailRequestDto.getCreatedBy() == null) {
                 orderDetailRequestDto.setCreatedBy(existingOrderDetail.getCreatedBy());
             }
@@ -77,12 +78,18 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         orderDetailRepository.deleteById(id);
     }
 
-    public List<OrderDetailResponseDto> createOrderDetails(OrderDto orderRequestDto) {
-        List<OrderDetailResponseDto>  orderDetailResponseDtos = new ArrayList<>();
-        for (OrderDetailRequestDto orderDetailRequestDto : orderRequestDto.getOrderDetails()) {            
+    public List<OrderDetailResponseDto> createOrderDetails(List<OrderDetailRequestDto> orderDetailRequestDtos,
+            Long orderHeaderId) {
+        List<OrderDetailResponseDto> orderDetailResponseDtos = new ArrayList<>();
+        for (OrderDetailRequestDto orderDetailRequestDto : orderDetailRequestDtos) {
+            orderDetailRequestDto.setHeaderId(orderHeaderId);
             OrderDetail orderDetail = modelMapper.map(orderDetailRequestDto, OrderDetail.class);
-            OrderDetailResponseDto orderDetailResponseDto = modelMapper.map(orderDetailRepository.save(orderDetail), OrderDetailResponseDto.class);
-            orderDetailResponseDtos.add(orderDetailResponseDto);
+            if (orderDetail.getQuantity().compareTo(variantService.getVariantById(orderDetail.getVariantId()).getStock()) <= 0) {
+                variantService.updateStock(orderDetailRequestDto.getVariantId(), orderDetailRequestDto.getQuantity());
+                OrderDetailResponseDto orderDetailResponseDto = modelMapper.map(orderDetailRepository.save(orderDetail),
+                        OrderDetailResponseDto.class);
+                orderDetailResponseDtos.add(orderDetailResponseDto);
+            }
         }
         return orderDetailResponseDtos;
     }

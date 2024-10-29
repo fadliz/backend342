@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xa.backend342.dtos.requests.OrderDetailRequestDto;
-import com.xa.backend342.dtos.requests.OrderDto;
 import com.xa.backend342.dtos.responses.OrderDetailResponseDto;
 import com.xa.backend342.payloads.ApiResponse;
 import com.xa.backend342.services.impl.OrderDetailServiceImpl;
@@ -58,12 +57,6 @@ public class OrderDetailRestController {
     public ResponseEntity<Void> deleteOrderDetail(@PathVariable Long id) {
         orderDetailService.deleteOrderDetail(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/orders")
-    public ResponseEntity<?> createOrderDetails(@RequestBody OrderDto orderRequestDto) {
-        List<OrderDetailResponseDto> orderDetailResponseDtos = orderDetailService.createOrderDetails(orderRequestDto);
-        return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), orderDetailResponseDtos));
     }
     
 }

@@ -1,5 +1,6 @@
 package com.xa.backend342.services.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -79,5 +80,15 @@ public class VariantServiceImpl implements VariantService {
     public void deleteVariant(Long id) {
         variantRepository.deleteById(id);
     }
+
+    public void updateStock(Long id,  BigDecimal stockUsed) {
+        Optional<Variant> existingVariantOpt = variantRepository.findById(id);
+        if (existingVariantOpt.isPresent()) {
+            Variant existingVariant = existingVariantOpt.get();
+            existingVariant.setStock(existingVariant.getStock().subtract(stockUsed));
+            variantRepository.save(existingVariant);
+        }
+    }
+
     
 }
